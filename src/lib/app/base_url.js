@@ -1,0 +1,1 @@
+export const base_url = "https://religion-caste-backend.onrender.com/api/"
