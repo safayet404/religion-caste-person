@@ -1,18 +1,16 @@
 <script>
     import { page } from "$app/stores";
-    import { createEventDispatcher, onMount } from "svelte";
+    import { createEventDispatcher } from "svelte";
 
     const dispatch = createEventDispatcher();
 
     export let id;
-    console.log("Received Religion ID in AddCaste:", id);
 
     let name = "";
     let description = "";
     let religionId = id;
 
     function addCaste() {
-        console.log("Submitting caste for religion:", religionId);
         const newCaste = {
             name,
             description,

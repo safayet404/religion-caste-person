@@ -1,5 +1,7 @@
-import { loadReligions } from "$lib/server/religion"
+// +page.js
+import { loadPerson } from "$lib/server/person";
+import { loadReligions } from "$lib/server/religion";
 
 export const load = async () => {
-    return await loadReligions()
-}
+    return await loadPerson()
+};

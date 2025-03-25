@@ -47,7 +47,6 @@
 
     async function updateCaste(event) {
         const updatedCaste = event.detail;
-        console.log("update", updatedCaste);
 
         try {
             const res = await axios.put(

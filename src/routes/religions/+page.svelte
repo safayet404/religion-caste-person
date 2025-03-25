@@ -59,7 +59,7 @@
             toast.success("Religion added!");
         } catch (error) {
             console.error("API Error:", error.response?.data || error.message);
-            toast.error("Failed to add person.Please try again");
+            toast.error("Failed to add religion.Please try again");
         } finally {
             isLoading = false;
         }

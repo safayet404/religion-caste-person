@@ -1,9 +1,13 @@
 <script>
+    import { createEventDispatcher } from "svelte";
+
     export let religions = [];
 
     let selectedReligionId = religions.length > 0 ? religions[0]._id : null;
     let selectedCastes = [];
     let selectedCasteId = null;
+
+    const dispatch = createEventDispatcher();
 
     function updateCastes(event) {
         let selectedReligion = religions.find(
@@ -12,6 +16,14 @@
         selectedCastes = selectedReligion ? selectedReligion.castes : [];
         selectedCasteId =
             selectedCastes.length > 0 ? selectedCastes[0]._id : null;
+
+        dispatch("updateReligion", { selectedReligionId, selectedCasteId });
+    }
+
+    function updateCaste(event) {
+        selectedCasteId = event.target.value;
+
+        dispatch("updateReligion", { selectedReligionId, selectedCasteId });
     }
 
     if (selectedReligionId && religions.length > 0) {
@@ -40,6 +52,7 @@
                 <select
                     bind:value={selectedCasteId}
                     class="rounded-md p-2 w-[50%] mt-5"
+                    on:change={updateCaste}
                 >
                     {#each selectedCastes as caste}
                         <option value={caste._id}>{caste.name}</option>
