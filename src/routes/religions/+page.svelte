@@ -32,7 +32,7 @@
 
             toast.success("Religion Updated");
         } catch (error) {
-            toast.error("Failed to update person.Please try again");
+            toast.error("Failed to update religion.Please try again");
         } finally {
             selectedReligion = null;
         }

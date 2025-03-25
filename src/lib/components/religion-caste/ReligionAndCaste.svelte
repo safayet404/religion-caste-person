@@ -2,11 +2,16 @@
     import { createEventDispatcher } from "svelte";
 
     export let religions = [];
+    export let religion;
+    export let caste;
 
-    let selectedReligionId = religions.length > 0 ? religions[0]._id : null;
+    let selectedReligionId = religion
+        ? religion
+        : religions.length > 0
+          ? religions[0]._id
+          : null;
     let selectedCastes = [];
-    let selectedCasteId = null;
-
+    let selectedCasteId = caste ? caste : null;
     const dispatch = createEventDispatcher();
 
     function updateCastes(event) {
@@ -14,8 +19,9 @@
             (religion) => religion._id === event.target.value,
         );
         selectedCastes = selectedReligion ? selectedReligion.castes : [];
-        selectedCasteId =
-            selectedCastes.length > 0 ? selectedCastes[0]._id : null;
+        if (!caste && selectedCastes.length > 0) {
+            selectedCasteId = selectedCastes[0]._id;
+        }
 
         dispatch("updateReligion", { selectedReligionId, selectedCasteId });
     }

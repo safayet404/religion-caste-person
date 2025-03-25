@@ -1,6 +1,7 @@
 <script>
     import { base_url } from "$lib/app/base_url.js";
     import AddPersonsForm from "$lib/components/person/AddPersonsForm.svelte";
+    import EditPersonForm from "$lib/components/person/EditPersonForm.svelte";
     import PersonsTable from "$lib/components/person/PersonsTable.svelte";
     import ReligionAndCaste from "$lib/components/religion-caste/ReligionAndCaste.svelte";
     import axios from "axios";
@@ -62,9 +63,45 @@
             isLoading = false;
         }
     }
+
+    async function updatePerson(event) {
+        const updatePerson = event.detail;
+
+        try {
+            const res = await axios.put(
+                `${base_url}user/update-user/${updatePerson.id}`,
+                updatePerson,
+            );
+            persons = persons.map((person) =>
+                person._id === updatePerson.id ? res.data : person,
+            );
+            toast.success("Person updated !");
+        } catch (error) {
+            toast.error("Failed to update person.Please try again");
+        } finally {
+            selectedPerson = null;
+        }
+    }
 </script>
 
 <div class="w-full">
-    <AddPersonsForm {religions} on:add={addPerson} />
-    <PersonsTable {persons} on:delete={deletePerson} />
+    {#if selectedPerson}
+        <EditPersonForm
+            {selectedPerson}
+            {religions}
+            on:save={updatePerson}
+            on:cancel={() => (selectedPerson = null)}
+        />
+    {:else}
+        <AddPersonsForm {religions} on:add={addPerson} />
+        {#if isLoading}
+            <div>Loading ...</div>
+        {:else}
+            <PersonsTable
+                {persons}
+                on:edit={handleEdit}
+                on:delete={deletePerson}
+            />
+        {/if}
+    {/if}
 </div>

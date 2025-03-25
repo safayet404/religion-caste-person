@@ -59,9 +59,6 @@
     <div class="container mx-auto p-4">
         <h1 class="font-bold text-lg md:text-4xl mt-10">Person Manager</h1>
 
-        {selectedReligionId}
-        {selectedCasteId}
-
         <form class="mt-10 mx-auto" on:submit|preventDefault={addPerson}>
             <div class="grid grid-cols-1 w-[50%] gap-10">
                 <div class="flex flex-col">
@@ -104,13 +101,12 @@
                         required
                     />
                 </div>
+                <Calender on:dateSelected={handleDateSelected} />
 
                 <ReligionAndCaste
                     {religions}
                     on:updateReligion={handleUpdate}
                 />
-
-                <Calender on:dateSelected={handleDateSelected} />
 
                 <div class="flex flex-col">
                     <button

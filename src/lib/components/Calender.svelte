@@ -8,6 +8,8 @@
     let errorMessage = "";
 
     const dispatch = createEventDispatcher();
+    export let dateOfBirth;
+    console.log("da", dateOfBirth);
 
     let editDay = null;
     let editMonth = null;
@@ -17,14 +19,12 @@
         const formattedDate = `${year}-${month < 10 ? "0" + month : month}-${day < 10 ? "0" + day : day}`;
         console.log("Formatted Date:", formattedDate);
 
-        dispatch("dateSelected", formattedDate);
+        dispatch("dateSelected", formattedDate); // Pass the selected date back to the parent
     }
 
-    export let birthDate = null;
-
     $: {
-        if (birthDate) {
-            const [year, month, day] = birthDate
+        if (dateOfBirth) {
+            const [year, month, day] = dateOfBirth
                 .split("T")[0]
                 .split("-")
                 .map(Number);
