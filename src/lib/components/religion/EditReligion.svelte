@@ -3,8 +3,6 @@
 
     export let selectedReligion;
 
-    console.log("selectedPerson:", selectedReligion);
-
     const dispatch = createEventDispatcher();
 
     let name = selectedReligion.name;

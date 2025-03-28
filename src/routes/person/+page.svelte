@@ -4,15 +4,13 @@
     import EditPersonForm from "$lib/components/person/EditPersonForm.svelte";
     import PersonsTable from "$lib/components/person/PersonsTable.svelte";
     import ReligionAndCaste from "$lib/components/religion-caste/ReligionAndCaste.svelte";
+    import { apiRequest } from "$lib/utils/apiUtils.js";
     import axios from "axios";
     import toast from "svelte-5-french-toast";
 
     export let data;
-
-    let { religionObj, personObj } = data || {};
-
-    let religions = religionObj.religions;
-    let persons = personObj.persons;
+    let religions = data.religions;
+    let persons = data.persons;
 
     let isLoading = false;
 
@@ -26,9 +24,7 @@
         const delPerson = event.detail.person;
 
         try {
-            const res = await axios.delete(
-                `${base_url}user/delete-user/${delPerson._id}`,
-            );
+            await apiRequest(`user/delete-user/${delPerson._id}`, "DELETE");
             persons = persons.filter((person) => person._id !== delPerson._id);
             toast.success("Person deleted!");
         } catch (error) {
@@ -49,11 +45,13 @@
         console.log("person", newPerson);
 
         try {
-            const res = await axios.post(
-                `${base_url}user/create-user`,
+            const person = await apiRequest(
+                "user/create-user",
+                "POST",
                 newPerson,
             );
-            persons = [res.data, ...persons];
+
+            persons = [person, ...persons];
             toast.success("Person added!");
         } catch (error) {
             console.log();
@@ -65,17 +63,21 @@
     }
 
     async function updatePerson(event) {
-        const updatePerson = event.detail;
+        const updatedPerson = event.detail;
 
         try {
-            const res = await axios.put(
-                `${base_url}user/update-user/${updatePerson.id}`,
-                updatePerson,
+            const person = await apiRequest(
+                `user/update-user/${updatedPerson.id}`,
+                "PUT",
+                updatedPerson,
             );
+
+            console.log(person);
+
             persons = persons.map((person) =>
-                person._id === updatePerson.id ? res.data : person,
+                person._id === updatedPerson.id ? updatedPerson : person,
             );
-            toast.success("Person updated !");
+            toast.success("Person updated!");
         } catch (error) {
             toast.error("Failed to update person.Please try again");
         } finally {

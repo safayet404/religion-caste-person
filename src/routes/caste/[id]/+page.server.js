@@ -1,7 +1,7 @@
 import { base_url } from "$lib/app/base_url";
 import axios from "axios";
 
-async function getCasteByReligion(id) { // Accept id as a parameter
+async function getCasteByReligion(id) {
     try {
         const res = await axios.get(`${base_url}castes/all-castes/${id}`);
 

@@ -9,7 +9,6 @@
 
     const dispatch = createEventDispatcher();
     export let dateOfBirth;
-    console.log("da", dateOfBirth);
 
     let editDay = null;
     let editMonth = null;
