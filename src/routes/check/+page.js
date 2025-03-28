@@ -1,8 +1,15 @@
+export async function load({ fetch, params }) {
 
-export async function load({ fetch }) {
-    const response = await fetch('/api/data');
-    const { religions, persons } = await response.json();
 
-    return { religions, persons }
+    const response = await fetch(`/api/caste/67d31432662e3565481dac3a`); // Correct API endpoint
 
+    if (!response.ok) {
+        return { castes: null, error: "Failed to fetch caste data" };
+    }
+
+    const { castes } = await response.json();
+
+    return { castes };
 }
+
+

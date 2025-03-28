@@ -4,6 +4,7 @@
     import AddReligion from "$lib/components/religion/AddReligion.svelte";
     import EditReligion from "$lib/components/religion/EditReligion.svelte";
     import ReligionTable from "$lib/components/religion/ReligionTable.svelte";
+    import { apiRequest } from "$lib/utils/apiUtils.js";
     import axios from "axios";
     import toast from "svelte-5-french-toast";
 
@@ -22,12 +23,16 @@
         const updatedReligion = event.detail;
 
         try {
-            const res = await axios.put(
-                `${base_url}religions/update-religion/${updatedReligion.id}`,
+            const religion = await apiRequest(
+                `religions/update-religion/${updatedReligion.id}`,
+                "PUT",
                 updatedReligion,
             );
+
             religions = religions.map((religion) =>
-                religion._id === updatedReligion.id ? res.data : religion,
+                religion._id === updatedReligion.id
+                    ? updatedReligion
+                    : religion,
             );
 
             toast.success("Religion Updated");
@@ -51,11 +56,13 @@
         }
 
         try {
-            const res = await axios.post(
-                `${base_url}religions/create-religion`,
+            const religion = await apiRequest(
+                "religions/create-religion",
+                "POST",
                 newReligion,
             );
-            religions = [res.data, ...religions];
+
+            religions = [religion, ...religions];
             toast.success("Religion added!");
         } catch (error) {
             console.error("API Error:", error.response?.data || error.message);
@@ -69,8 +76,9 @@
         const delReligion = event.detail.religion;
 
         try {
-            const res = await axios.delete(
-                `${base_url}religions/delete-religion/${delReligion._id}`,
+            await apiRequest(
+                `religions/delete-religion/${delReligion._id}`,
+                "DELETE",
             );
             religions = religions.filter(
                 (religion) => religion._id !== delReligion._id,

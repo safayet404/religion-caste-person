@@ -3,6 +3,7 @@
     import AddCaste from "$lib/components/caste/AddCaste.svelte";
     import CasteTable from "$lib/components/caste/CasteTable.svelte";
     import EditCaste from "$lib/components/caste/EditCaste.svelte";
+    import { apiRequest } from "$lib/utils/apiUtils.js";
     import axios from "axios";
     import toast from "svelte-5-french-toast";
 
@@ -27,11 +28,12 @@
         }
 
         try {
-            const res = await axios.post(
-                `${base_url}castes/create-caste`,
+            const caste = await apiRequest(
+                "castes/create-caste",
+                "POST",
                 newCaste,
             );
-            castes = [res.data, ...castes];
+            castes = [caste, ...castes];
             toast.success("Caste added!");
         } catch (error) {
             console.error("API Error:", error.response?.data || error.message);
@@ -49,12 +51,13 @@
         const updatedCaste = event.detail;
 
         try {
-            const res = await axios.put(
-                `${base_url}castes/update-caste/${updatedCaste.id}`,
+            const caste = await apiRequest(
+                `castes/update-caste/${updatedCaste.id}`,
+                "PUT",
                 updatedCaste,
             );
             castes = castes.map((caste) =>
-                caste._id === updatedCaste.id ? res.data : caste,
+                caste._id === updatedCaste.id ? updatedCaste : caste,
             );
 
             toast.success("Caste updated!");
@@ -70,9 +73,7 @@
         const delCaste = event.detail.caste;
 
         try {
-            const res = await axios.delete(
-                `${base_url}castes/delete-caste/${delCaste._id}`,
-            );
+            await apiRequest(`castes/delete-caste/${delCaste._id}`, "DELETE");
 
             castes = castes.filter((caste) => caste._id !== delCaste._id);
             toast.success("Caste deleted!");

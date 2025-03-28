@@ -1,10 +1,8 @@
-import { loadReligions } from "$lib/server/religion";
 
+export async function load({ fetch }) {
+    const response = await fetch('/api/religion');
+    const { religions } = await response.json();
 
-export const load = async () => {
-    return await loadReligions();
-};
+    return { religions }
 
-
-
-
+}

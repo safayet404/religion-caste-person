@@ -1,44 +1,17 @@
-import { base_url } from "$lib/app/base_url";
-import axios from "axios";
 
-async function getCasteByReligion(id) {
-    try {
-        const res = await axios.get(`${base_url}castes/all-castes/${id}`);
 
-        if (res.status !== 200) {
-            return [];
-        }
-
-        return res.data;
-    } catch (error) {
-        console.log(`Error fetching religions : ${error.message}`, error);
-        return [];
-    }
-}
-
-export const load = async ({ params }) => {
+export async function load({ fetch, params }) {
     const { id } = params;
-    console.log("Religion ID", id);
 
 
-    let castes = await getCasteByReligion(id);
 
-    console.log("caste", castes);
+    const response = await fetch(`/api/caste/${id}`);
 
-
-    if (castes.length === 0) {
-        console.warn('No Castes found. Using fallback data.');
-        religions = [
-            {
-                id: 'ddad=fdajkshfajshdfaf',
-                name: 'XYZ',
-                description: 'No description',
-            }
-        ];
+    if (!response.ok) {
+        return { castes: null, error: "Failed to fetch caste data" };
     }
 
-    return {
-        castes,
-        id
-    };
-};
+    const { castes } = await response.json();
+
+    return { castes, id };
+}

@@ -1,9 +1,8 @@
 <script>
     export let data;
-    let religions = data.religions;
-    let persons = data.persons;
-    console.log("jj", religions);
-    console.log("pp", persons);
+    let caste = data.castes;
+
+    console.log("jj", caste);
 </script>
 
 <h1>This is Check page</h1>
